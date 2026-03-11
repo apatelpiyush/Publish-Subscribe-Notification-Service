@@ -70,14 +70,13 @@ The system uses a simple text-based protocol.
 
 Client Commands
 
-SUBSCRIBE `<topic>`{=html} PUBLISH `<topic>`{=html} `<message>`{=html}
+SUBSCRIBE `<topic>` PUBLISH `<topic>` `<message>`
 EXIT
 
 Server Responses
 
-SUBSCRIBED `<topic>`{=html} MESSAGE `<topic>`{=html} `<message>`{=html}
-ERROR `<message>`{=html}
-
+SUBSCRIBED `<topic>` MESSAGE `<topic>` `<message>`
+ERROR `<message>`
 Example:
 
 Subscriber → SUBSCRIBE sports\
