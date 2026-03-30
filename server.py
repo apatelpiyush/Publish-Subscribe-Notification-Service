@@ -22,9 +22,6 @@ def remove_client(conn):
             if topic in topics:
                 topics[topic].discard(conn)
 
-                if not topics[topic]:
-                    del topics[topic]
-
         client_subscriptions.pop(conn, None)
 
 
@@ -90,6 +87,25 @@ def handle_client(conn, addr):
                     send_line(conn, f"SUBSCRIBED = [{topic}]")
 
                     print(addr, "subscribed to", topic)
+                    print_topics()
+
+                # -------------------------
+                # CREATE
+                # -------------------------
+                elif command == "CREATE":
+
+                    if len(parts) < 2:
+                        send_line(conn, "ERROR Missing topic")
+                        continue
+
+                    topic = parts[1]
+
+                    with lock:
+                        if topic not in topics:
+                            topics[topic] = set()
+
+                    send_line(conn, f"CREATED [{topic}]")
+                    print("[CREATED]", topic)
                     print_topics()
 
                 # -------------------------

@@ -34,13 +34,21 @@ def main():
 
             if cmd.lower() == "list":
                 secure_sock.send(b"LIST\n")
-                print(secure_sock.recv(1024).decode())
+                response = ""
+                while True:
+                    part = secure_sock.recv(1024).decode()
+                    response += part
+                    if "\n" in part:
+                        break
+
+                print(response.strip())
                 continue
 
             if not cmd:
                 continue
 
             topic = cmd
+            secure_sock.send(f"CREATE {topic}\n".encode())
             print("Publishing to topic:", topic)
             continue
 
