@@ -1,7 +1,7 @@
 import socket
 import ssl
 
-HOST = "172.24.155.31"
+HOST = "127.0.0.1"
 PORT = 5000
 
 
@@ -17,15 +17,55 @@ def main():
     secure_sock.connect((HOST, PORT))
 
     print("Connected as Publisher")
+    print("Commands: list | switch | exit\n")
+
+    topic = None
 
     while True:
 
-        topic = input("Enter topic: ")
-        message = input("Enter message: ")
+        # choose topic
+        if topic is None:
 
-        cmd = f"PUBLISH {topic} {message}"
+            cmd = input("Topic> ").strip()
 
-        secure_sock.send((cmd + "\n").encode())
+            if cmd.lower() == "exit":
+                secure_sock.send(b"EXIT\n")
+                break
+
+            if cmd.lower() == "list":
+                secure_sock.send(b"LIST\n")
+                print(secure_sock.recv(1024).decode())
+                continue
+
+            if not cmd:
+                continue
+
+            topic = cmd
+            print("Publishing to topic:", topic)
+            continue
+
+        # send message
+        msg = input(f"{topic}> ").strip()
+
+        if msg.lower() == "exit":
+            secure_sock.send(b"EXIT\n")
+            break
+
+        if msg.lower() == "switch":
+            topic = None
+            continue
+
+        if msg.lower() == "list":
+            secure_sock.send(b"LIST\n")
+            print(secure_sock.recv(1024).decode())
+            continue
+
+        if not msg:
+            continue
+
+        secure_sock.send(f"PUBLISH {topic} {msg}\n".encode())
+
+    secure_sock.close()
 
 
 if __name__ == "__main__":
