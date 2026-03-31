@@ -182,14 +182,20 @@ The system can be evaluated under different loads:
 
   Clients   Description
   --------- ----------------
-  5         Normal usage
-  10        Moderate load
-  20+       Stress testing
+  10         Normal usage
+  100        Moderate load
+  200+       Stress testing
 
 Metrics measured: - Message latency - Throughput - System scalability
 
 ------------------------------------------------------------------------
+# Latency and Scalability Evaluation
 
+The system evaluation under different loads obtains us a graph with the following data:
+
+![Graph](images/latency_graph.png)
+
+------------------------------------------------------------------------
 # Real World Applications
 
 This architecture is used in many real-world systems:
